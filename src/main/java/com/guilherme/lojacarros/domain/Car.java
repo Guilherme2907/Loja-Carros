@@ -40,7 +40,6 @@ public class Car extends AbstractEntity<Long> {
     @NotNull
     @NumberFormat(style = NumberFormat.Style.CURRENCY, pattern = "#,##0.00")
     @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
-    @JsonFormat()
     private Double price;
 
     @JsonIgnore
