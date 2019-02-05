@@ -32,8 +32,8 @@ public class DBService {
     public void initializeTestDataBase() throws ParseException {
 
         User u1 = new User("Guilherme", "guilherme@gmail.com", "456874689");
-        Car c1 = new Car(null, "Esportivo", "Audi", "Audi TT", "2016", 150.000, u1);
-        Car c2 = new Car(null, "Sedan", "Honda", "Honda Civic", "2015", 60.000, u1);
+        Car c1 = new Car(null, "Esportivo", "Audi", "Audi TT", "2016", 150000.00, u1);
+        Car c2 = new Car(null, "Sedan", "Honda", "Honda Civic", "2015", 60000.00, u1);
 
         userRepository.save(u1);
         carRepository.saveAll(Arrays.asList(c1, c2));

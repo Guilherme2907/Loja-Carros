@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,12 @@ public class CarResources {
 
     @Autowired
     private CarService carService;
+
+    @GetMapping("{id}")
+    public ResponseEntity<Car> findById(@PathVariable Long id) {
+        Car car = carService.findById(id);
+        return ResponseEntity.ok(car);
+    }
 
     @GetMapping
     public ResponseEntity<List<Car>> findAll() {
