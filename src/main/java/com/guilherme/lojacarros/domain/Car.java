@@ -29,7 +29,7 @@ public class Car extends AbstractEntity<Long> {
     private String brand;
 
     @NotBlank(message = "Model is required")
-    @Size(min = 5, max = 20, message = "Model be beetween {min} and {max} letters")
+    @Size(min = 2, max = 20, message = "Model be beetween {min} and {max} letters")
     @Column(nullable = false)
     private String model;
 

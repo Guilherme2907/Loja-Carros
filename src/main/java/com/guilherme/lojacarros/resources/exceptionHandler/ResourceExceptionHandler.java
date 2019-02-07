@@ -1,5 +1,6 @@
 package com.guilherme.lojacarros.resources.exceptionHandler;
 
+import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,11 @@ public class ResourceExceptionHandler {
             vem.setErrors(error.getField(), error.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(vem);
+    }
+
+    public ResponseEntity<StandartErrorMessage> getDataIntegrityViolationExceptionCustom(DataIntegrityViolationExceptionCustom e, HttpServletRequest req) {
+        StandartErrorMessage sem = new StandartErrorMessage(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
+                "Erro de integridade de dados", e.getMessage(), req.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(sem);
     }
 }

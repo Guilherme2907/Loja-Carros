@@ -2,9 +2,11 @@ package com.guilherme.lojacarros.service;
 
 import com.guilherme.lojacarros.domain.Car;
 import com.guilherme.lojacarros.repository.CarRepository;
+import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +23,7 @@ public class CarService {
     private CarRepository carRepository;
 
     public Car save(Car car) {
+        car.setId(null);
         if (car == null) {
             return null;
         }
@@ -36,8 +39,27 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Page<Car> findAllPage(int page, int elementsPerPage, String direction, String orderBy) {
+    public Page<Car> findAllPage(int page, int elementsPerPage, String direction, String orderBy, String brand) {
         PageRequest pageRequest = PageRequest.of(page, elementsPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return carRepository.findAll(pageRequest);
+        if (brand.isEmpty()) {
+            return carRepository.findAll(pageRequest);
+        } else {
+            return carRepository.findByBrand(brand, pageRequest);
+        }
+    }
+
+    public Car update(Car car) {
+        if (!carRepository.findById(car.getId()).isPresent()) {
+            throw new ObjectNotFoundExceptionCustom("Esse carro não pode ser atualizado porque o id não existe");
+        }
+        return carRepository.save(car);
+    }
+
+    public void deleteById(Long id) {
+        try {
+            carRepository.deleteById(id);
+        } catch(DataIntegrityViolationException e){
+            throw new DataIntegrityViolationExceptionCustom("Carro não pode ser deletado");
+        }
     }
 }

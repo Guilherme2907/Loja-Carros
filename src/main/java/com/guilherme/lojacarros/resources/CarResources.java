@@ -12,11 +12,12 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,12 +55,26 @@ public class CarResources {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Car>> findAllPage(@RequestParam(value = "page", defaultValue = "0") int page,
+    public ResponseEntity<Page<Car>> findAllPage(@RequestParam(value = "brand", defaultValue = "") String brand,
+            @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "elementsPerPage", defaultValue = "24") int elementsPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "brand") String orderBy) {
 
-        Page<Car> cars = carService.findAllPage(page, elementsPerPage, direction, orderBy);
+        Page<Car> cars = carService.findAllPage(page, elementsPerPage, direction, orderBy, brand);
         return ResponseEntity.ok(cars);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateCar(@PathVariable Long id, @RequestBody Car car) {
+        car.setId(id);
+        carService.update(car);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        carService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
