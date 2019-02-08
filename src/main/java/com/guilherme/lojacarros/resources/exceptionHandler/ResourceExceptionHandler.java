@@ -35,6 +35,7 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(vem);
     }
 
+    @ExceptionHandler(DataIntegrityViolationExceptionCustom.class)
     public ResponseEntity<StandartErrorMessage> getDataIntegrityViolationExceptionCustom(DataIntegrityViolationExceptionCustom e, HttpServletRequest req) {
         StandartErrorMessage sem = new StandartErrorMessage(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
                 "Erro de integridade de dados", e.getMessage(), req.getRequestURI());

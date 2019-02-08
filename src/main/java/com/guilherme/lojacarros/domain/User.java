@@ -6,12 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +24,7 @@ import javax.validation.constraints.NotBlank;
  * @author Guilherme
  */
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User extends AbstractEntity<Long> {
 
     @NotBlank
@@ -37,6 +40,13 @@ public class User extends AbstractEntity<Long> {
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    private Address address;
+
+    @ElementCollection
+    @CollectionTable(name = "phones")
+    private Set<String> phones = new HashSet();
+
     @OneToMany(mappedBy = "client")
     private List<Car> cars = new ArrayList();
 
@@ -48,11 +58,12 @@ public class User extends AbstractEntity<Long> {
         addProfile(Profile.CLIENTE);
     }
 
-    public User(String name, String email, String cpf) {
+    public User(Long id, String name, String email, String cpf, Address address) {
+        super(id);
         this.name = name;
         this.email = email;
         this.cpf = cpf;
-        addProfile(Profile.CLIENTE);
+        this.address = address;
     }
 
     public String getName() {
@@ -93,5 +104,21 @@ public class User extends AbstractEntity<Long> {
 
     public Set<Profile> getProfiles() {
         return this.profiles.stream().map(p -> Profile.toEnum(p)).collect(Collectors.toSet());
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Set<String> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<String> phones) {
+        this.phones = phones;
     }
 }
