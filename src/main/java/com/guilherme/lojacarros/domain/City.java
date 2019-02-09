@@ -5,6 +5,7 @@
  */
 package com.guilherme.lojacarros.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +19,7 @@ public class City extends AbstractEntity<Long> {
 
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "state_id")
     private State state;

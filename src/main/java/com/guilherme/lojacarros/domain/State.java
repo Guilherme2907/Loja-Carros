@@ -5,6 +5,7 @@
  */
 package com.guilherme.lojacarros.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ public class State extends AbstractEntity<Long> {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "state")
     private Set<City> Cities = new HashSet();
 

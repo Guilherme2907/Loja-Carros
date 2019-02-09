@@ -5,6 +5,7 @@
  */
 package com.guilherme.lojacarros.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +18,6 @@ import javax.persistence.OneToOne;
  *
  * @author Guilherme
  */
-
 @Entity
 public class Address implements Serializable {
 
@@ -33,6 +33,7 @@ public class Address implements Serializable {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "user_id")
     @MapsId
@@ -50,6 +51,14 @@ public class Address implements Serializable {
         this.cep = cep;
         this.city = city;
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreet() {

@@ -11,7 +11,6 @@ import com.guilherme.lojacarros.repository.CityRepository;
 import com.guilherme.lojacarros.repository.StateRepository;
 import com.guilherme.lojacarros.repository.UserRepository;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
