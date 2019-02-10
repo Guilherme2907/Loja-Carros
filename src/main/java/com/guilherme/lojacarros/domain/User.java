@@ -26,17 +26,11 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "users")
 public class User extends AbstractEntity<Long> {
 
-    @NotBlank
-    @Column(nullable = false)
+
     private String name;
 
-    @NotBlank
-    @Email
-    @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
-    @Column(nullable = false, unique = true)
     private String cpf;
 
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
@@ -63,6 +57,7 @@ public class User extends AbstractEntity<Long> {
         this.email = email;
         this.cpf = cpf;
         this.address = address;
+        addProfile(Profile.CLIENTE);
     }
 
     public String getName() {
@@ -119,5 +114,5 @@ public class User extends AbstractEntity<Long> {
 
     public void setPhones(Set<String> phones) {
         this.phones = phones;
-    }
+    } 
 }
