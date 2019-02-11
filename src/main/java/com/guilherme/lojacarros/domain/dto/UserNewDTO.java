@@ -1,32 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.guilherme.lojacarros.domain.dto;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CPF;
 
 /**
  *
  * @author Guilherme
  */
-public class UserNewDTO implements Serializable {
 
-    @NotBlank(message = "nome obrigatório")
-    @Column(nullable = false)
+public class UserNewDTO {
+
+    @NotEmpty(message = "nome obrigatório")
     private String name;
 
     @NotBlank
     @Email(message = "Email inválido")
-    @Column(nullable = false, unique = true)
     private String email;
 
+    @CPF(message = "CPF inválido")
     @NotBlank(message = "cpf obrigatório")
-    @Column(nullable = false, unique = true)
     private String cpf;
 
     @NotBlank(message = "rua obrigatória")
@@ -34,7 +29,6 @@ public class UserNewDTO implements Serializable {
     private String street;
 
     @NotBlank(message = "número obrigatório")
-    @Column(nullable = false)
     private String number;
 
     private String complement;
@@ -159,4 +153,11 @@ public class UserNewDTO implements Serializable {
     public void setTelephone2(String telephone2) {
         this.telephone2 = telephone2;
     } 
+
+    @Override
+    public String toString() {
+        return "UserNewDTO{" + "name=" + name + ", email=" + email + ", cpf=" + cpf + ", street=" + street + ", number=" + number + ", complement=" + complement + ", neighborhood=" + neighborhood + ", cep=" + cep + ", cityId=" + cityId + ", telephone1=" + telephone1 + ", telephone2=" + telephone2 + '}';
+    }
+    
+    
 }

@@ -14,26 +14,24 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 /**
  *
  * @author Guilherme
  */
 @Entity
-@Table(name = "users")
 public class User extends AbstractEntity<Long> {
 
-
+    @Column(nullable = false)
     private String name;
 
+//    @Column(nullable = false, unique = true)
     private String email;
 
+//    @Column(nullable = false, unique = true)
     private String cpf;
 
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "user")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private Address address;
 
     @ElementCollection
@@ -114,5 +112,12 @@ public class User extends AbstractEntity<Long> {
 
     public void setPhones(Set<String> phones) {
         this.phones = phones;
-    } 
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "name=" + name + ", email=" + email + ", cpf=" + cpf + ", address=" + address + ", phones=" + phones + ", cars=" + cars + ", profiles=" + profiles + '}';
+    }
+    
+    
 }

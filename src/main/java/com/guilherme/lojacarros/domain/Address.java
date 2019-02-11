@@ -7,6 +7,7 @@ package com.guilherme.lojacarros.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -23,10 +24,17 @@ public class Address implements Serializable {
 
     @Id
     private Long id;
+    @Column(nullable = false)
     private String street;
+    
+    @Column(nullable = false)
     private String number;
     private String complement;
+    
+    @Column(nullable = false)
     private String neighborhood;
+    
+    @Column(nullable = false)
     private String cep;
 
     @ManyToOne

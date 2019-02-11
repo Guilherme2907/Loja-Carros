@@ -9,13 +9,18 @@ import com.guilherme.lojacarros.domain.User;
 import com.guilherme.lojacarros.domain.dto.UserDTO;
 import com.guilherme.lojacarros.domain.dto.UserNewDTO;
 import com.guilherme.lojacarros.service.UserService;
+import com.guilherme.lojacarros.service.validators.UserValidator;
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +38,16 @@ public class UserResources {
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private UserValidator userValidator;
+    
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.setValidator(userValidator);
+    }
+    
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody UserNewDTO userDTO){
+    public ResponseEntity<Void> save(@RequestBody @Valid UserNewDTO userDTO){
         User user = userService.save(userDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -56,5 +69,11 @@ public class UserResources {
     public ResponseEntity<List<UserDTO>> findAll() {
         List<UserDTO> usersDTO = userService.findAll();
         return ResponseEntity.ok(usersDTO);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id,@RequestBody @Valid UserNewDTO userDTO){
+        userService.update(userDTO, id);
+        return ResponseEntity.noContent().build();
     }
 }

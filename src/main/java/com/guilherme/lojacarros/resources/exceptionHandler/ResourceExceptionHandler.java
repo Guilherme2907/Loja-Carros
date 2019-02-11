@@ -27,12 +27,13 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorMessage> getMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest req) {
         ValidationErrorMessage vem = new ValidationErrorMessage(System.currentTimeMillis(),
-                HttpStatus.BAD_REQUEST.value(), "Bad Request", "Erro de validação", req.getRequestURI());
+                HttpStatus.UNPROCESSABLE_ENTITY.value(), "Unprocessable Entity", "Erro de validação", req.getRequestURI());
 
         for (FieldError error : e.getBindingResult().getFieldErrors()) {
             vem.setErrors(error.getField(), error.getDefaultMessage());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(vem);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(vem);
+
     }
 
     @ExceptionHandler(DataIntegrityViolationExceptionCustom.class)
