@@ -7,12 +7,14 @@ import com.guilherme.lojacarros.domain.dto.UserDTO;
 import com.guilherme.lojacarros.domain.dto.UserNewDTO;
 import com.guilherme.lojacarros.repository.AddressRepository;
 import com.guilherme.lojacarros.repository.UserRepository;
+import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -56,6 +58,15 @@ public class UserService {
         user.getAddress().setId(id);
         userRepository.save(user);
         addressRepository.save(user.getAddress());
+    }
+
+    public void delete(Long id) {
+        User user = findById(id);
+        try {
+            userRepository.delete(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationExceptionCustom("Usuário não pode ser deletado");
+        }
     }
 
     public User toUser(UserNewDTO userDTO) {

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,17 +38,17 @@ public class UserResources {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private UserValidator userValidator;
-    
+
     @InitBinder
-    public void initBinder(WebDataBinder binder){
+    public void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
     }
-    
+
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody @Valid UserNewDTO userDTO){
+    public ResponseEntity<Void> save(@RequestBody @Valid UserNewDTO userDTO) {
         User user = userService.save(userDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
@@ -70,10 +71,16 @@ public class UserResources {
         List<UserDTO> usersDTO = userService.findAll();
         return ResponseEntity.ok(usersDTO);
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id,@RequestBody @Valid UserNewDTO userDTO){
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid UserNewDTO userDTO) {
         userService.update(userDTO, id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
