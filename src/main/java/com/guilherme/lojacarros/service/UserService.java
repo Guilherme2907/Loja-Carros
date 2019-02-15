@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,6 +30,9 @@ public class UserService {
 
     @Autowired
     private AddressRepository addressRepository;
+    
+    @Autowired 
+    private BCryptPasswordEncoder encoder;
 
     @Transactional
     public User save(UserNewDTO userDTO) {
@@ -70,7 +74,7 @@ public class UserService {
     }
 
     public User toUser(UserNewDTO userDTO) {
-        User user = new User(null, userDTO.getName(), userDTO.getEmail(), userDTO.getCpf(), null);
+        User user = new User(null, userDTO.getName(), userDTO.getEmail(), userDTO.getCpf(), null,encoder.encode(userDTO.getPassword()));
         City city = new City(userDTO.getCityId(), null, null);
         Address address = new Address(null, userDTO.getStreet(), userDTO.getNumber(), userDTO.getComplement(), userDTO.getNeighborhood(),
                 userDTO.getCep(), city, user);

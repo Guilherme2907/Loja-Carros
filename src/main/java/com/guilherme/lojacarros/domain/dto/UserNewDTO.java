@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.br.CPF;
  *
  * @author Guilherme
  */
-
 public class UserNewDTO {
 
     @NotEmpty(message = "nome obrigatório")
@@ -19,6 +18,9 @@ public class UserNewDTO {
     @NotBlank
     @Email(message = "Email inválido")
     private String email;
+    
+    @NotBlank
+    private String password;
 
     @CPF(message = "CPF inválido")
     @NotBlank(message = "cpf obrigatório")
@@ -42,7 +44,7 @@ public class UserNewDTO {
     private String cep;
 
     private Long cityId;
-    
+
     @NotBlank(message = "ao menos 1 telefone deve ser informado")
     @Column(nullable = false)
     private String telephone1;
@@ -52,7 +54,8 @@ public class UserNewDTO {
     public UserNewDTO() {
     }
 
-    public UserNewDTO(String nome, String email, String cpf, String street, String number, String complement, String neighborhood, String cep, Long cityId, String telephone1, String telephone2) {
+    public UserNewDTO(String nome, String email, String cpf, String street, String number, String complement, String neighborhood,
+            String cep, Long cityId, String telephone1, String telephone2,String password) {
         this.name = nome;
         this.email = email;
         this.cpf = cpf;
@@ -64,6 +67,7 @@ public class UserNewDTO {
         this.cityId = cityId;
         this.telephone1 = telephone1;
         this.telephone2 = telephone2;
+        this.password = password;
     }
 
     public String getName() {
@@ -80,6 +84,14 @@ public class UserNewDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCpf() {
@@ -152,12 +164,11 @@ public class UserNewDTO {
 
     public void setTelephone2(String telephone2) {
         this.telephone2 = telephone2;
-    } 
+    }
 
     @Override
     public String toString() {
         return "UserNewDTO{" + "name=" + name + ", email=" + email + ", cpf=" + cpf + ", street=" + street + ", number=" + number + ", complement=" + complement + ", neighborhood=" + neighborhood + ", cep=" + cep + ", cityId=" + cityId + ", telephone1=" + telephone1 + ", telephone2=" + telephone2 + '}';
     }
-    
-    
+
 }

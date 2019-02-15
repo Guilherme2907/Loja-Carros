@@ -1,5 +1,6 @@
 package com.guilherme.lojacarros.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.guilherme.lojacarros.domain.enums.Profile;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,10 +26,14 @@ public class User extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String name;
 
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
+    
+    @JsonIgnore
+    @Column(nullable = false)
+    private String password;
 
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String cpf;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
@@ -49,12 +54,13 @@ public class User extends AbstractEntity<Long> {
         addProfile(Profile.CLIENTE);
     }
 
-    public User(Long id, String name, String email, String cpf, Address address) {
+    public User(Long id, String name, String email, String cpf, Address address,String password) {
         super(id);
         this.name = name;
         this.email = email;
         this.cpf = cpf;
         this.address = address;
+        this.password = password;
         addProfile(Profile.CLIENTE);
     }
 
@@ -72,6 +78,14 @@ public class User extends AbstractEntity<Long> {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCpf() {

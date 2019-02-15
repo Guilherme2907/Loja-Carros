@@ -13,6 +13,7 @@ import com.guilherme.lojacarros.repository.UserRepository;
 import java.text.ParseException;
 import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,13 +37,16 @@ public class DBService {
 
     @Autowired
     private AddressRepository addressRepository;
+    
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public void initializeTestDataBase() throws ParseException {
         State state1 = new State(null, "São Paulo");
         City city1 = new City(null, "São Paulo", state1);
         Address address1 = new Address(null, "Mirassol", "123", "ap 25", "Jd Mirasol", "12235-489", city1, null);
 
-        User u1 = new User(null, "Guilherme", "guilherme@gmail.com", "43670534822", address1);
+        User u1 = new User(null, "Guilherme", "guilherme@gmail.com", "43670534822", address1,encoder.encode("123"));
         address1.setUser(u1);
 
         Car c1 = new Car(null, "Esportivo", "Audi", "Audi TT", "2016", 150000.00, u1);
@@ -55,6 +59,5 @@ public class DBService {
         addressRepository.save(address1);
         userRepository.save(u1);
         carRepository.saveAll(Arrays.asList(c1, c2));
-
     }
 }
