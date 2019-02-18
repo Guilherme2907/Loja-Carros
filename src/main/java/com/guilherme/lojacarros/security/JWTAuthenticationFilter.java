@@ -6,12 +6,10 @@
 package com.guilherme.lojacarros.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.guilherme.lojacarros.domain.dto.CredentialsDTO;
+import com.guilherme.lojacarros.dto.CredentialsDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.guilherme.lojacarros.domain.dto;
+package com.guilherme.lojacarros.dto;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;

@@ -3,12 +3,14 @@ package com.guilherme.lojacarros.service;
 import com.guilherme.lojacarros.domain.Address;
 import com.guilherme.lojacarros.domain.City;
 import com.guilherme.lojacarros.domain.User;
-import com.guilherme.lojacarros.domain.dto.UserDTO;
-import com.guilherme.lojacarros.domain.dto.UserNewDTO;
+import com.guilherme.lojacarros.dto.EmailDTO;
+import com.guilherme.lojacarros.dto.UserDTO;
+import com.guilherme.lojacarros.dto.UserNewDTO;
 import com.guilherme.lojacarros.repository.AddressRepository;
 import com.guilherme.lojacarros.repository.UserRepository;
 import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
+import com.guilherme.lojacarros.service.util.PasswordUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,9 +32,12 @@ public class UserService {
 
     @Autowired
     private AddressRepository addressRepository;
-    
-    @Autowired 
+
+    @Autowired
     private BCryptPasswordEncoder encoder;
+    
+    @Autowired
+    private EmailService emailService;
 
     @Transactional
     public User save(UserNewDTO userDTO) {
@@ -72,9 +77,17 @@ public class UserService {
             throw new DataIntegrityViolationExceptionCustom("Usuário não pode ser deletado");
         }
     }
+    
+      public void sendNewPassword(EmailDTO emailDTO) {
+        User user = findByEmail(emailDTO.getEmail());
+        String newPass = PasswordUtil.generateNewPassowrd();
+        user.setPassword(encoder.encode(newPass));
+        userRepository.save(user);
+        emailService.sendNewPassword(user, newPass);
+    }
 
     public User toUser(UserNewDTO userDTO) {
-        User user = new User(null, userDTO.getName(), userDTO.getEmail(), userDTO.getCpf(), null,encoder.encode(userDTO.getPassword()));
+        User user = new User(null, userDTO.getName(), userDTO.getEmail(), userDTO.getCpf(), null, encoder.encode(userDTO.getPassword()));
         City city = new City(userDTO.getCityId(), null, null);
         Address address = new Address(null, userDTO.getStreet(), userDTO.getNumber(), userDTO.getComplement(), userDTO.getNeighborhood(),
                 userDTO.getCep(), city, user);

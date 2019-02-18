@@ -6,8 +6,8 @@
 package com.guilherme.lojacarros.resources;
 
 import com.guilherme.lojacarros.domain.User;
-import com.guilherme.lojacarros.domain.dto.UserDTO;
-import com.guilherme.lojacarros.domain.dto.UserNewDTO;
+import com.guilherme.lojacarros.dto.UserDTO;
+import com.guilherme.lojacarros.dto.UserNewDTO;
 import com.guilherme.lojacarros.service.UserService;
 import com.guilherme.lojacarros.service.validators.UserValidator;
 import java.net.URI;

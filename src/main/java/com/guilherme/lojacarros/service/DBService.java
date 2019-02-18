@@ -46,7 +46,7 @@ public class DBService {
         City city1 = new City(null, "São Paulo", state1);
         Address address1 = new Address(null, "Mirassol", "123", "ap 25", "Jd Mirasol", "12235-489", city1, null);
 
-        User u1 = new User(null, "Guilherme", "guilherme@gmail.com", "43670534822", address1,encoder.encode("123"));
+        User u1 = new User(null, "Guilherme", "guilherme.magalhaes2907@gmail.com", "43670534822", address1,encoder.encode("123"));
         address1.setUser(u1);
 
         Car c1 = new Car(null, "Esportivo", "Audi", "Audi TT", "2016", 150000.00, u1);

@@ -6,7 +6,7 @@
 package com.guilherme.lojacarros.service.validators;
 
 import com.guilherme.lojacarros.domain.User;
-import com.guilherme.lojacarros.domain.dto.UserNewDTO;
+import com.guilherme.lojacarros.dto.UserNewDTO;
 import com.guilherme.lojacarros.repository.UserRepository;
 import java.util.Map;
 import java.util.Optional;

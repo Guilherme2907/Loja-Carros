@@ -1,4 +1,4 @@
-package com.guilherme.lojacarros.domain.dto;
+package com.guilherme.lojacarros.dto;
 
 import com.guilherme.lojacarros.domain.User;
 import java.io.Serializable;
