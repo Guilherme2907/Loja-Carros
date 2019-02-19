@@ -8,6 +8,7 @@ import com.guilherme.lojacarros.dto.UserDTO;
 import com.guilherme.lojacarros.dto.UserNewDTO;
 import com.guilherme.lojacarros.repository.AddressRepository;
 import com.guilherme.lojacarros.repository.UserRepository;
+import com.guilherme.lojacarros.security.UserDetailsApp;
 import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
 import com.guilherme.lojacarros.service.util.PasswordUtil;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder encoder;
-    
+
     @Autowired
     private EmailService emailService;
 
@@ -77,13 +79,21 @@ public class UserService {
             throw new DataIntegrityViolationExceptionCustom("Usuário não pode ser deletado");
         }
     }
-    
-      public void sendNewPassword(EmailDTO emailDTO) {
+
+    public void sendNewPassword(EmailDTO emailDTO) {
         User user = findByEmail(emailDTO.getEmail());
         String newPass = PasswordUtil.generateNewPassowrd();
         user.setPassword(encoder.encode(newPass));
         userRepository.save(user);
         emailService.sendNewPassword(user, newPass);
+    }
+
+    public UserDetailsApp authenticated() {
+        try {
+            return (UserDetailsApp) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public User toUser(UserNewDTO userDTO) {
