@@ -40,6 +40,7 @@ public class State extends AbstractEntity<Long> {
         this.name = name;
     }
 
+    @JsonIgnore
     public Set<City> getCities() {
         return Cities;
     }

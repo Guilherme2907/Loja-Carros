@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment env;
 
-    private static final String[] PUBLIC_MATCHERS = {"/h2-console/**","/auth/forgot/**"};
+    private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/auth/forgot/**"};
 
     private static final String[] GET_MATCHERS = {"/cars/**"};
 
@@ -52,8 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
-        http.cors().and().csrf().disable();
-        http.authorizeRequests()
+        http.csrf().disable().cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                .and()
+                .authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers(HttpMethod.GET, GET_MATCHERS).permitAll()
                 .anyRequest().authenticated();
@@ -65,12 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-
-    public CorsConfigurationSource configurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
     }
 
     @Bean

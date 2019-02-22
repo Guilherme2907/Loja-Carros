@@ -6,12 +6,16 @@
 package com.guilherme.lojacarros.repository;
 
 import com.guilherme.lojacarros.domain.City;
+import com.guilherme.lojacarros.domain.State;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author Guilherme
  */
-public interface CityRepository extends JpaRepository<City, Long>{
-    
+public interface CityRepository extends JpaRepository<City, Long> {
+
+    Optional<List<City>> findByState(State state);
 }
