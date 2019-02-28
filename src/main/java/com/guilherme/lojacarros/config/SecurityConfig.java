@@ -22,8 +22,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 /**
  *
@@ -44,7 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**", "/auth/forgot/**"};
 
-    private static final String[] GET_MATCHERS = {"/cars/**"};
+    private static final String[] GET_MATCHERS = {"/cars/**","/states/**"};
+    
+     private static final String[] POST_MATCHERS = {"/users/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -57,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers(HttpMethod.GET, GET_MATCHERS).permitAll()
+                .antMatchers(HttpMethod.POST,POST_MATCHERS).permitAll()
                 .anyRequest().authenticated();
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jWTUtil));
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jWTUtil, userDetailsService));

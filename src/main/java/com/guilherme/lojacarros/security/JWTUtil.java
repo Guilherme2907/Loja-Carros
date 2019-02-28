@@ -20,7 +20,7 @@ public class JWTUtil {
 
     private static final String SECRET_WORD = "secretword";
 
-    private static final long EXPIRATION_TIME = 60000000;
+    private static final long EXPIRATION_TIME = 3600000;
 
     public String generateToken(String username) {
         return Jwts.builder().setSubject(username).setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))

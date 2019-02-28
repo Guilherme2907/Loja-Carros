@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.websocket.ClientEndpoint;
 import org.springframework.format.annotation.NumberFormat;
 
 /**
@@ -41,6 +42,10 @@ public class Car extends AbstractEntity<Long> {
     @NumberFormat(style = NumberFormat.Style.CURRENCY, pattern = "#,##0.00")
     @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0.00")
     private Double price;
+    
+    @NotNull
+    @Column(nullable = false)
+    private String image;
 
     @JsonIgnore
     @ManyToOne
@@ -50,7 +55,7 @@ public class Car extends AbstractEntity<Long> {
     public Car() {
     }
 
-    public Car(Long id,String vehicleType, String brand, String model, String year, Double price, User client) {
+    public Car(Long id,String vehicleType, String brand, String model, String year, Double price, User client,String image) {
         super(id);
         this.vehicleType = vehicleType;
         this.brand = brand;
@@ -58,6 +63,7 @@ public class Car extends AbstractEntity<Long> {
         this.year = year;
         this.price = price;
         this.client = client;
+        this.image = image;
     }
 
     public String getVehicleType() {
@@ -108,4 +114,11 @@ public class Car extends AbstractEntity<Long> {
         this.client = client;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
