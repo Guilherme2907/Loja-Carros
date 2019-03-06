@@ -55,13 +55,25 @@ public class CarResources {
     }
 
     @GetMapping("/page")
-    public ResponseEntity<Page<Car>> findAllPage(@RequestParam(value = "brand", defaultValue = "") String brand,
+    public ResponseEntity<Page<Car>> findAllPage(@RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "elementsPerPage", defaultValue = "24") int elementsPerPage,
+            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "orderBy", defaultValue = "brand") String orderBy) {
+
+        Page<Car> cars = carService.findAllPage(page, elementsPerPage, direction, orderBy);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Car>> searchCars(@RequestParam(value = "year", defaultValue = "") String year,
+            @RequestParam(value = "vehicleType", defaultValue = "") String vehicleType,
+            @RequestParam(value = "brand", defaultValue = "") String brand,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "elementsPerPage", defaultValue = "24") int elementsPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "brand") String orderBy) {
 
-        Page<Car> cars = carService.findAllPage(page, elementsPerPage, direction, orderBy, brand);
+        Page<Car> cars = carService.searchCars(page, elementsPerPage, direction, orderBy, brand, year, vehicleType);
         return ResponseEntity.ok(cars);
     }
 

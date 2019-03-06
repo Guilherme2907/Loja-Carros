@@ -4,6 +4,7 @@ import com.guilherme.lojacarros.domain.Car;
 import com.guilherme.lojacarros.repository.CarRepository;
 import com.guilherme.lojacarros.service.exceptions.DataIntegrityViolationExceptionCustom;
 import com.guilherme.lojacarros.service.exceptions.ObjectNotFoundExceptionCustom;
+import com.guilherme.lojacarros.service.util.URL;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,13 +40,34 @@ public class CarService {
         return carRepository.findAll();
     }
 
-    public Page<Car> findAllPage(int page, int elementsPerPage, String direction, String orderBy, String brand) {
+    public Page<Car> findAllPage(int page, int elementsPerPage, String direction, String orderBy) {
         PageRequest pageRequest = PageRequest.of(page, elementsPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return carRepository.findAll(pageRequest);
+
+    }
+
+    public Page<Car> searchCars(int page, int elementsPerPage, String direction, String orderBy, String brand,
+            String year, String vehicleType) {
+
+        PageRequest pageRequest = PageRequest.of(page, elementsPerPage, Sort.Direction.valueOf(direction), orderBy);
+
         if (brand.isEmpty()) {
-            return carRepository.findAll(pageRequest);
-        } else {
-            return carRepository.findByBrand(brand, pageRequest);
+            brand = listBrands();
         }
+
+        if (year.isEmpty()) {
+            year = listYears();
+        }
+
+        if (vehicleType.isEmpty()) {
+            vehicleType = listTypes();
+        }
+
+        List<String> years = URL.decodeList(year);
+        List<String> brands = URL.decodeList(brand);
+        List<String> vehicleTypes = URL.decodeList(vehicleType);
+
+        return carRepository.SearchCars(brands, years, vehicleTypes, pageRequest);
     }
 
     public Car update(Car car) {
@@ -58,8 +80,35 @@ public class CarService {
     public void deleteById(Long id) {
         try {
             carRepository.deleteById(id);
-        } catch(DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationExceptionCustom("Carro não pode ser deletado");
         }
+    }
+
+    public String listBrands() {
+        String brands = "";
+        List<String> FindBrand = carRepository.FindBrands();
+        for (String s : FindBrand) {
+            brands += "," + s;
+        }
+        return brands;
+    }
+
+    public String listYears() {
+        String years = "";
+        List<String> FindYear = carRepository.FindYears();
+        for (String s : FindYear) {
+            years += "," + s;
+        }
+        return years;
+    }
+
+    public String listTypes() {
+        String types = "";
+        List<String> FindVehicleType = carRepository.FindVehicleTypes();
+        for (String s : FindVehicleType) {
+            types += "," + s;
+        }
+        return types;
     }
 }
