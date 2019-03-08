@@ -20,7 +20,7 @@ import org.springframework.format.annotation.NumberFormat;
 public class Car extends AbstractEntity<Long> {
 
     @NotBlank(message = "Vehicle Type is required")
-    @Size(min = 5, max = 20, message = "Vehicle Type must be beetween {min} and {max} letters")
+    @Size(min = 2, max = 20, message = "Vehicle Type must be beetween {min} and {max} letters")
     @Column(name = "vehicle_type", nullable = false)
     private String vehicleType;
 
