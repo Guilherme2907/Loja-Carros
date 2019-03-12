@@ -5,6 +5,7 @@ import com.guilherme.lojacarros.domain.Car;
 import com.guilherme.lojacarros.domain.City;
 import com.guilherme.lojacarros.domain.State;
 import com.guilherme.lojacarros.domain.User;
+import com.guilherme.lojacarros.domain.enums.Profile;
 import com.guilherme.lojacarros.repository.AddressRepository;
 import com.guilherme.lojacarros.repository.CarRepository;
 import com.guilherme.lojacarros.repository.CityRepository;
@@ -48,9 +49,13 @@ public class DBService {
         City city2 = new City(null, "Belo Horizonte", state2);
         City city3 = new City(null, "São José dos Campos", state1);
         Address address1 = new Address(null, "Mirassol", "123", "ap 25", "Jd Mirasol", "12235-489", city1, null);
+        Address address2 = new Address(null, "Mirassol", "123", "ap 25", "Jd Mirasol", "12235-489", city1, null);
 
         User u1 = new User(null, "Guilherme", "guilherme.magalhaes2907@gmail.com", "43670534822", address1, encoder.encode("123"));
+        u1.addProfile(Profile.ADMIN);
+         User u2 = new User(null, "Guilherme", "guilherme@gmail.com", "15158631824", address1, encoder.encode("123"));
         address1.setUser(u1);
+        address2.setUser(u2);
 
         Car c1 = new Car(null, "Esportivo", "Audi", "Audi Ireland", "2016", 150000.00, null, "https://imagizer.imageshack.com/img923/5825/h7z2Xz.jpg");
         Car c2 = new Car(null, "Sedã", "Honda", "Honda Civic", "2015", 60000.00, null, "https://imagizer.imageshack.com/img921/3852/aHaB3X.jpg");
@@ -69,8 +74,8 @@ public class DBService {
 
         stateRepository.saveAll(Arrays.asList(state1, state2));
         cityRepository.saveAll(Arrays.asList(city1, city2, city3));
-        addressRepository.save(address1);
-        userRepository.save(u1);
+        addressRepository.saveAll(Arrays.asList(address1,address2));
+        userRepository.saveAll(Arrays.asList(u1,u2));
         carRepository.saveAll(Arrays.asList(c1, c2, c3,c4,c5,c6,c7,c8,c9,c10,c11,c12));
     }
 }
